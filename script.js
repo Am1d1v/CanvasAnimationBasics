@@ -87,6 +87,22 @@ function handleParticles(){
         particlesArray[i].update();
         particlesArray[i].draw();
 
+        for (let j = i; j < particlesArray.length; j++) {
+            const dx = particlesArray[i].x - particlesArray[j].x;
+            const dy = particlesArray[i].y - particlesArray[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if(distance < 100){
+                context.beginPath();
+                context.strokeStyle = particlesArray[i].color;
+                context.lineWidth = 0.3;
+                context.moveTo(particlesArray[i].x, particlesArray[i].y);
+                context.lineTo(particlesArray[j].x, particlesArray[j].y);
+                context.stroke();
+                context.closePath();
+            }
+        }
+
         if(particlesArray[i].size <= 0.3){
             particlesArray.splice(i, 1);
             console.log(particlesArray.length);
@@ -97,7 +113,7 @@ function handleParticles(){
 
 function animate(){
     //context.clearRect(0, 0, canvas.width, canvas.height);
-    context.fillStyle = `rgba(0, 0, 0, 0.02)`;
+    context.fillStyle = `rgba(0, 0, 0, 0.5)`;
     context.fillRect(0, 0, canvas.width, canvas.height)
     handleParticles();
     requestAnimationFrame(animate)
