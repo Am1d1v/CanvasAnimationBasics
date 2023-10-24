@@ -26,6 +26,10 @@ canvas.addEventListener('click',(event) => {
     mouse.x = event.x;
     mouse.y = event.y;
 
+    for (let i = 0; i < 10; i++) {
+        particlesArray.push(new Particle());    
+    }
+
 });
 
 canvas.addEventListener('mousemove',(event) => {
@@ -38,11 +42,11 @@ canvas.addEventListener('mousemove',(event) => {
 
 class Particle {
     constructor(){
-        // this.x = mouse.x;
-        // this.y = mouse.y;
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 5 + 1;
+        this.x = mouse.x;
+        this.y = mouse.y;
+        //this.x = Math.random() * canvas.width;
+        //this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 15 + 1;
         this.speedX = Math.random() * 3 - 1.5;
         this.speedY = Math.random() * 3 - 1.5;
     }
@@ -50,31 +54,40 @@ class Particle {
     update(){
         this.x += this.speedX;
         this.y += this.speedY;
+        if(this.size > 0.2){
+            this.size -= 0.1;
+        }
     }
 
     draw(){
-        context.fillStyle = 'gray';
+        context.fillStyle = 'violet';
         context.strokeStyle = 'blue';
         context.lineWidth = 10;
         context.beginPath();
-        context.arc(this.x, this.y, 50, 0, Math.PI * 2);
+        context.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         context.stroke();
         context.fill();
     }
 }
 
-function init(){
-    for(let i = 0; i < 100; i++){
-        particlesArray.push(new Particle());
-    }
-}
-init();
+// function init(){
+//     for(let i = 0; i < 100; i++){
+//         particlesArray.push(new Particle());
+//     }
+// }
+// init();
 //console.log(particlesArray)
 
 function handleParticles(){
     for (let i = 0; i < particlesArray.length; i++) {
         particlesArray[i].update();
         particlesArray[i].draw();
+
+        if(particlesArray[i].size <= 0.3){
+            particlesArray.splice(i, 1);
+            console.log(particlesArray.length);
+            i--;
+        }
     }
 }
 
